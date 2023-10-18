@@ -15,7 +15,7 @@ function LoadKonvaCanvas({ savedState }) {
 	return (
 		<div
 			ref={containerRef}
-			className='w-[300px] h-[300px] bg-center bg-cover'
+			className='bg-no-repeat'
 			style={{ backgroundImage: "url(/body-map.jpeg)" }}
 		></div>
 	);
