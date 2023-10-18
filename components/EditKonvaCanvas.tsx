@@ -1,10 +1,12 @@
 "use client";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Circle, Image, Layer, Line, Stage, Text } from "react-konva";
 import useImage from "use-image";
+import { Button } from "./ui/button";
 
 function EditKonvaCanvas({ savedState }) {
 	const [image] = useImage("/body-map.jpeg");
+	const stageRef = useRef(null);
 
 	// Extract circles and their corresponding text labels from savedState
 	const initialCircles = savedState.children[0].children
@@ -130,45 +132,54 @@ function EditKonvaCanvas({ savedState }) {
 		}
 	};
 
+	const handleSave = () => {
+		const stageToSave = stageRef.current;
+		const stageState = stageToSave.toJSON();
+		console.log(stageState); // For demonstration purposes
+	};
 	return (
-		<Stage width={612} height={612} onClick={handleStageClick}>
-			<Layer>
-				<Image image={image} />
-				{areas.map((area, index) => (
-					<Line
-						key={index}
-						points={area.coords}
-						closed
-						stroke='transparent' // Make it invisible
-					/>
-				))}
-				{circles.map((circle, index) => (
-					<>
-						<Circle
+		<div>
+			<Stage width={612} height={612} onClick={handleStageClick} ref={stageRef}>
+				<Layer>
+					<Image image={image} alt='body map' />
+					{areas.map((area, index) => (
+						<Line
 							key={index}
-							x={circle.x}
-							y={circle.y}
-							radius={circle.radius}
-							fill={circle.fill}
-							stroke={circle.stroke}
-							strokeWidth={circle.strokeWidth}
-							draggable={true}
+							points={area.coords}
+							closed
+							stroke='transparent' // Make it invisible
 						/>
-						<Text
-							x={circle.x}
-							y={circle.y}
-							text={circle.name}
-							fontSize={15}
-							align='center'
-							verticalAlign='middle'
-							offsetX={5} // Adjust based on the font size
-							offsetY={7} // Adjust based on the font size
-							fill='black'
-						/>
-					</>
-				))}
-			</Layer>
-		</Stage>
+					))}
+					{circles.map((circle, index) => (
+						<>
+							<Circle
+								key={index}
+								x={circle.x}
+								y={circle.y}
+								radius={circle.radius}
+								fill={circle.fill}
+								stroke={circle.stroke}
+								strokeWidth={circle.strokeWidth}
+								draggable={true}
+							/>
+							<Text
+								x={circle.x}
+								y={circle.y}
+								text={circle.name}
+								fontSize={15}
+								align='center'
+								verticalAlign='middle'
+								offsetX={5} // Adjust based on the font size
+								offsetY={7} // Adjust based on the font size
+								fill='black'
+							/>
+						</>
+					))}
+				</Layer>
+			</Stage>
+
+			<Button onClick={handleSave}>SAVE</Button>
+		</div>
 	);
 }
 

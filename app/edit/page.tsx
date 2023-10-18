@@ -229,8 +229,8 @@ const EditCanvas = (props: Props) => {
 								},
 								{
 									attrs: {
-										x: 453,
-										y: 77,
+										x: 188,
+										y: 102,
 										radius: 20,
 										fill: "transparent",
 										stroke: "red",
@@ -240,8 +240,33 @@ const EditCanvas = (props: Props) => {
 								},
 								{
 									attrs: {
-										x: 453,
-										y: 77,
+										x: 188,
+										y: 102,
+										text: "Face",
+										fontSize: 15,
+										align: "center",
+										verticalAlign: "middle",
+										offsetX: 5,
+										offsetY: 7,
+										fill: "black",
+									},
+									className: "Text",
+								},
+								{
+									attrs: {
+										x: 440,
+										y: 67,
+										radius: 20,
+										fill: "transparent",
+										stroke: "red",
+										strokeWidth: 3,
+									},
+									className: "Circle",
+								},
+								{
+									attrs: {
+										x: 440,
+										y: 67,
 										text: "Head",
 										fontSize: 15,
 										align: "center",
@@ -254,8 +279,8 @@ const EditCanvas = (props: Props) => {
 								},
 								{
 									attrs: {
-										x: 435,
-										y: 196,
+										x: 422,
+										y: 299,
 										radius: 20,
 										fill: "transparent",
 										stroke: "red",
@@ -265,9 +290,9 @@ const EditCanvas = (props: Props) => {
 								},
 								{
 									attrs: {
-										x: 435,
-										y: 196,
-										text: "Back",
+										x: 422,
+										y: 299,
+										text: "Butt",
 										fontSize: 15,
 										align: "center",
 										verticalAlign: "middle",
