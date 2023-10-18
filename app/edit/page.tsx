@@ -1,14 +1,13 @@
-"use client";
-import LoadKonvaCanvas from "@/components/LoadKonvaCanvas";
+import EditKonvaCanvas from "@/components/EditKonvaCanvas";
 import React from "react";
 
 type Props = {};
 
-const InjuryPage = (props: Props) => {
+const EditCanvas = (props: Props) => {
 	return (
 		<div>
-			<h1>VIEW PAGE</h1>
-			<LoadKonvaCanvas
+			<h1>Edit Canvas</h1>
+			<EditKonvaCanvas
 				savedState={{
 					attrs: { width: 300, height: 300 },
 					className: "Stage",
@@ -80,4 +79,4 @@ const InjuryPage = (props: Props) => {
 	);
 };
 
-export default InjuryPage;
+export default EditCanvas;
