@@ -3,7 +3,7 @@ import { Circle, Image, Layer, Line, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import { Button } from "./ui/button";
 
-function KonvaCanvas() {
+function CreateKonvaCanvas() {
 	const [image] = useImage("/body-map.jpeg");
 	const [circles, setCircles] = useState([]);
 	const stageRef = useRef(null);
@@ -167,4 +167,4 @@ function KonvaCanvas() {
 	);
 }
 
-export default KonvaCanvas;
+export default CreateKonvaCanvas;
