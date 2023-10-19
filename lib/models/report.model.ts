@@ -14,7 +14,8 @@ const reportSchema = new mongoose.Schema({
 	//LIST OF INJURIES
 	injuries: [
 		{
-			type: String,
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Injury",
 			required: true,
 		},
 	],

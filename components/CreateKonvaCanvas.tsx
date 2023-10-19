@@ -1,17 +1,21 @@
 import { X } from "lucide-react";
 import React, { useRef, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Circle, Image, Layer, Line, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
-
 function CreateKonvaCanvas() {
 	const [image] = useImage("/body-map.jpeg");
 	const [circles, setCircles] = useState([]);
 
 	//KEEP TRACK OF INJURY LIST
 	const [inputs, setInputs] = useState([]);
+
+	//FOR DATE TIME PICKER
+	const [startDate, setStartDate] = useState(new Date());
 
 	const stageRef = useRef(null);
 	const areas = [
@@ -135,11 +139,11 @@ function CreateKonvaCanvas() {
 		}
 	};
 
-	const handleSave = () => {
-		const stageToSave = stageRef.current;
-		const stageState = stageToSave.toJSON();
-		console.log(stageState); // For demonstration purposes
-	};
+	// const handleSave = () => {
+	// 	const stageToSave = stageRef.current;
+	// 	const stageState = stageToSave.toJSON();
+	// 	console.log(stageState); // For demonstration purposes
+	// };
 	const handleDelete = (label) => {
 		const newCircles = circles.filter((circle) => circle.label !== label);
 		setCircles(newCircles);
@@ -159,10 +163,11 @@ function CreateKonvaCanvas() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		const stageToSave = stageRef.current;
-		const stageState = stageToSave.toJSON();
-		console.log(inputs);
-		console.log(stageState);
+		// const stageToSave = stageRef.current;
+		// const stageState = stageToSave.toJSON();
+		console.log(startDate);
+		// console.log(inputs);
+		// console.log(stageState);
 		// console.log(circles);
 	};
 
@@ -205,7 +210,7 @@ function CreateKonvaCanvas() {
 						))}
 					</Layer>
 				</Stage>
-				<div className='mt-4'>
+				<div className='mt-4 flex flex-col gap-2'>
 					{inputs.map((input, index) => (
 						<div key={index} className='flex flex-col gap-2'>
 							<div className='flex flex-row items-center gap-2'>
@@ -226,10 +231,21 @@ function CreateKonvaCanvas() {
 							/>
 						</div>
 					))}
+
+					<Label htmlFor='patientName'>Patient Name</Label>
+					<Input type='text' placeholder='Name of Patient' id='patientName' />
+					<Label htmlFor='patientAge'>Patient Age</Label>
+					<Input type='number' placeholder='Age of Patient' id='patientAge' />
+					<Label htmlFor='timeOfInjury'>Date & Time of Injury</Label>
+					<DatePicker
+						selected={startDate}
+						onChange={(date) => setStartDate(date)}
+						timeInputLabel='Time:'
+						dateFormat='MM/dd/yyyy h:mm aa'
+						showTimeInput
+					/>
 				</div>
-				<Button onClick={handleSave} className='mt-2'>
-					SAVE
-				</Button>
+
 				<Button type='submit' className='mt-2'>
 					CREATE
 				</Button>
