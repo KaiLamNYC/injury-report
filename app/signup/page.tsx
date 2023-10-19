@@ -88,6 +88,22 @@ export default function SignUpPage() {
 							/>
 							<FormField
 								control={form.control}
+								name='username'
+								render={({ field }) => (
+									<FormItem>
+										{/* <FormLabel>Username</FormLabel> */}
+										<FormControl>
+											<Input placeholder='Username' {...field} />
+										</FormControl>
+										{/* <FormDescription>
+												This is your public display name.
+											</FormDescription> */}
+										<FormMessage />
+									</FormItem>
+								)}
+							/>
+							<FormField
+								control={form.control}
 								name='password'
 								render={({ field }) => (
 									<FormItem>
@@ -108,39 +124,31 @@ export default function SignUpPage() {
 							/>
 
 							<div className='flex justify-center items-center'>
-								<Button type='submit'>REGISTER</Button>
+								<Button type='submit' className='w-full'>
+									REGISTER
+								</Button>
 							</div>
 						</form>
 					</Form>
 				</CardContent>
 				<CardFooter className='flex flex-col'>
 					<p className='text-sm mb-2'>OR</p>
-					<div className='grid grid-cols-2 gap-4 mb-2'>
-						<Button
-							variant='outline'
-							onClick={() =>
-								signIn("google", {
-									callbackUrl: "/onboarding/1",
-								}).catch(console.error)
-							}
-						>
-							<Icons.google className='mr-2 h-4 w-4' />
-							Google
-						</Button>
-						<Button
-							variant='outline'
-							onClick={() =>
-								signIn("github", {
-									callbackUrl: "/onboarding/1",
-								}).catch(console.error)
-							}
-						>
-							<Icons.gitHub className='mr-2 h-4 w-4' />
-							Github
-						</Button>
-					</div>
+
+					<Button
+						variant='outline'
+						onClick={() =>
+							signIn("google", {
+								callbackUrl: "/onboarding/1",
+							}).catch(console.error)
+						}
+						className='w-full mb-4'
+					>
+						<Icons.google className='mr-2 h-4 w-4' />
+						Google
+					</Button>
+
 					<p className='text-sm mb-2'>
-						Already Have an Account? <Link href='/login'>Login</Link>
+						Already Have an Account? <Link href='/login'>LOGIN</Link>
 					</p>
 				</CardFooter>
 			</Card>

@@ -10,14 +10,28 @@ const reportSchema = new mongoose.Schema({
 	createdAt: {
 		type: Date,
 		default: Date.now,
+		required: true,
 	},
 
 	//COMMENTS ON THE THREAD
 	injuries: [
 		{
 			type: String,
+			required: true,
 		},
 	],
+	timeOfInjury: {
+		type: Date,
+		required: true,
+	},
+	patientName: {
+		type: String,
+		required: true,
+	},
+	patientAge: {
+		type: Number,
+		required: true,
+	},
 });
 
 //IF DOESNT EXIST IN DB THEN IT CREATES THE MODEL OTHERWISE JUST READS FROM DB
