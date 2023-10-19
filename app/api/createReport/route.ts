@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function POST(req: Request, res: Response) {
 	try {
 		connectToDB();
-		const { patientAge, patientName, timeOfInjury, injuries } =
+		const { patientAge, patientName, timeOfInjury, injuries, stageState } =
 			await req.json();
 		const session = await getAuthSession();
 
@@ -29,6 +29,7 @@ export async function POST(req: Request, res: Response) {
 			patientName,
 			timeOfInjury: new Date(timeOfInjury),
 			injuries: injuryIds,
+			stageState,
 		};
 
 		const report = await Report.create(reportData);

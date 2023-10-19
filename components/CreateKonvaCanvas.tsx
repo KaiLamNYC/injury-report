@@ -170,8 +170,8 @@ function CreateKonvaCanvas() {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		// const stageToSave = stageRef.current;
-		// const stageState = stageToSave.toJSON();
+		const stageToSave = stageRef.current;
+		const stageState = stageToSave.toJSON();
 		// console.log(startDate);
 		// console.log(inputs);
 		// console.log(stageState);
@@ -184,6 +184,7 @@ function CreateKonvaCanvas() {
 			patientName,
 			timeOfInjury: startDate,
 			injuries: inputs,
+			stageState,
 		});
 
 		// const response = await axios.get("/api/createReport");

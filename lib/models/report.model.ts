@@ -31,6 +31,10 @@ const reportSchema = new mongoose.Schema({
 		type: Number,
 		required: true,
 	},
+	stageState: {
+		type: Object,
+		required: true,
+	},
 });
 
 //IF DOESNT EXIST IN DB THEN IT CREATES THE MODEL OTHERWISE JUST READS FROM DB
