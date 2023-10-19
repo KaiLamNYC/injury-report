@@ -1,11 +1,18 @@
+import { X } from "lucide-react";
 import React, { useRef, useState } from "react";
 import { Circle, Image, Layer, Line, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
 function CreateKonvaCanvas() {
 	const [image] = useImage("/body-map.jpeg");
 	const [circles, setCircles] = useState([]);
+
+	//KEEP TRACK OF INJURY LIST
+	const [inputs, setInputs] = useState([]);
+
 	const stageRef = useRef(null);
 	const areas = [
 		{ name: "Right Palm", coords: [65, 314, 108, 323, 95, 379, 49, 362] },
@@ -115,6 +122,15 @@ function CreateKonvaCanvas() {
 					{ x: point.x, y: point.y, radius: 20, label: clickedArea.name },
 				]);
 			}
+
+			//INPUT STUFF
+			const existingInputIndex = inputs.findIndex(
+				(input) => input.label === clickedArea.name
+			);
+
+			if (existingInputIndex === -1) {
+				setInputs([...inputs, { label: clickedArea.name }]);
+			}
 		}
 	};
 
@@ -122,6 +138,13 @@ function CreateKonvaCanvas() {
 		const stageToSave = stageRef.current;
 		const stageState = stageToSave.toJSON();
 		console.log(stageState); // For demonstration purposes
+	};
+	const handleDelete = (label) => {
+		const newCircles = circles.filter((circle) => circle.label !== label);
+		setCircles(newCircles);
+
+		const newInputs = inputs.filter((input) => input.label !== label);
+		setInputs(newInputs);
 	};
 
 	return (
@@ -162,7 +185,30 @@ function CreateKonvaCanvas() {
 					))}
 				</Layer>
 			</Stage>
-			<Button onClick={handleSave}>SAVE</Button>
+			<div className='mt-4'>
+				{inputs.map((input, index) => (
+					<div key={index} className='flex flex-col gap-2'>
+						<div className='flex flex-row items-center gap-2'>
+							<Label htmlFor={`injury-${index}`}>{input.label}</Label>
+							<Button
+								onClick={() => handleDelete(input.label)}
+								className='p-1 w-6 h-6'
+							>
+								<X size={12} />
+							</Button>
+						</div>
+
+						<Input
+							id={`injury-${index}`}
+							type='text'
+							placeholder={`Describe ${input.label} injury`}
+						/>
+					</div>
+				))}
+			</div>
+			<Button onClick={handleSave} className='mt-2'>
+				SAVE
+			</Button>
 		</div>
 	);
 }
