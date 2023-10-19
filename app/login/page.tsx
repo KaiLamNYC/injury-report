@@ -122,7 +122,7 @@ export default function LogInPage() {
 						variant='outline'
 						onClick={() =>
 							signIn("google", {
-								callbackUrl: "/onboarding/1",
+								callbackUrl: "/dashboard",
 							}).catch(console.error)
 						}
 						className='w-full mb-4'

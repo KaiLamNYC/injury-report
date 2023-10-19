@@ -6,14 +6,12 @@ const reportSchema = new mongoose.Schema({
 		ref: "User",
 		required: true,
 	},
-
 	createdAt: {
 		type: Date,
 		default: Date.now,
 		required: true,
 	},
-
-	//COMMENTS ON THE THREAD
+	//LIST OF INJURIES
 	injuries: [
 		{
 			type: String,
@@ -35,6 +33,6 @@ const reportSchema = new mongoose.Schema({
 });
 
 //IF DOESNT EXIST IN DB THEN IT CREATES THE MODEL OTHERWISE JUST READS FROM DB
-const Report = mongoose.models.Thread || mongoose.model("Report", reportSchema);
+const Report = mongoose.models.Report || mongoose.model("Report", reportSchema);
 
 export default Report;
