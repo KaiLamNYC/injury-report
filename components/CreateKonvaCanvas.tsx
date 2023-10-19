@@ -124,12 +124,13 @@ function CreateKonvaCanvas() {
 			}
 
 			//INPUT STUFF
+
 			const existingInputIndex = inputs.findIndex(
 				(input) => input.label === clickedArea.name
 			);
 
 			if (existingInputIndex === -1) {
-				setInputs([...inputs, { label: clickedArea.name }]);
+				setInputs([...inputs, { label: clickedArea.name, value: "" }]);
 			}
 		}
 	};
@@ -146,69 +147,93 @@ function CreateKonvaCanvas() {
 		const newInputs = inputs.filter((input) => input.label !== label);
 		setInputs(newInputs);
 	};
+	const handleInputChange = (label, newValue) => {
+		const updatedInputs = inputs.map((input) => {
+			if (input.label === label) {
+				return { ...input, value: newValue };
+			}
+			return input;
+		});
+		setInputs(updatedInputs);
+	};
+
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		const stageToSave = stageRef.current;
+		const stageState = stageToSave.toJSON();
+		console.log(inputs);
+		console.log(stageState);
+		// console.log(circles);
+	};
 
 	return (
 		<div>
-			<Stage
-				width={image ? image.width : 0}
-				height={image ? image.height : 0}
-				onClick={handleStageClick}
-				ref={stageRef}
-			>
-				<Layer>
-					<Image image={image} alt='body map' />
-					{areas.map((area, index) => (
-						<Line key={index} name={area.name} points={area.coords} closed />
-					))}
-					{circles.map((circle, index) => (
-						<>
-							<Circle
-								key={index}
-								x={circle.x}
-								y={circle.y}
-								radius={circle.radius}
-								fill='transparent'
-								stroke='red'
-								strokeWidth={3}
-							/>
-							<Text
-								x={circle.x}
-								y={circle.y}
-								text={circle.label}
-								fontSize={15}
-								align='center'
-								verticalAlign='middle'
-								offsetX={5} // Adjust based on the font size
-								offsetY={7} // Adjust based on the font size
-							/>
-						</>
-					))}
-				</Layer>
-			</Stage>
-			<div className='mt-4'>
-				{inputs.map((input, index) => (
-					<div key={index} className='flex flex-col gap-2'>
-						<div className='flex flex-row items-center gap-2'>
-							<Label htmlFor={`injury-${index}`}>{input.label}</Label>
-							<Button
-								onClick={() => handleDelete(input.label)}
-								className='p-1 w-6 h-6'
-							>
-								<X size={12} />
-							</Button>
-						</div>
+			<form onSubmit={handleSubmit}>
+				<Stage
+					width={image ? image.width : 0}
+					height={image ? image.height : 0}
+					onClick={handleStageClick}
+					ref={stageRef}
+				>
+					<Layer>
+						<Image image={image} alt='body map' />
+						{areas.map((area, index) => (
+							<Line key={index} name={area.name} points={area.coords} closed />
+						))}
+						{circles.map((circle, index) => (
+							<>
+								<Circle
+									key={index}
+									x={circle.x}
+									y={circle.y}
+									radius={circle.radius}
+									fill='transparent'
+									stroke='red'
+									strokeWidth={3}
+								/>
+								<Text
+									x={circle.x}
+									y={circle.y}
+									text={circle.label}
+									fontSize={15}
+									align='center'
+									verticalAlign='middle'
+									offsetX={5} // Adjust based on the font size
+									offsetY={7} // Adjust based on the font size
+								/>
+							</>
+						))}
+					</Layer>
+				</Stage>
+				<div className='mt-4'>
+					{inputs.map((input, index) => (
+						<div key={index} className='flex flex-col gap-2'>
+							<div className='flex flex-row items-center gap-2'>
+								<Label htmlFor={`injury-${index}`}>{input.label}</Label>
+								<Button
+									onClick={() => handleDelete(input.label)}
+									className='p-1 w-6 h-6'
+								>
+									<X size={12} />
+								</Button>
+							</div>
 
-						<Input
-							id={`injury-${index}`}
-							type='text'
-							placeholder={`Describe ${input.label} injury`}
-						/>
-					</div>
-				))}
-			</div>
-			<Button onClick={handleSave} className='mt-2'>
-				SAVE
-			</Button>
+							<Input
+								id={`injury-${index}`}
+								type='text'
+								placeholder={`Describe ${input.label} injury`}
+								onChange={(e) => handleInputChange(input.label, e.target.value)}
+							/>
+						</div>
+					))}
+				</div>
+				<Button onClick={handleSave} className='mt-2'>
+					SAVE
+				</Button>
+				<Button type='submit' className='mt-2'>
+					CREATE
+				</Button>
+			</form>
 		</div>
 	);
 }
