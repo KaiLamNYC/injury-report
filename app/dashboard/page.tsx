@@ -6,12 +6,13 @@ type Props = {};
 
 const Dashboard = (props: Props) => {
 	const { data: session } = useSession();
-	console.log(session);
+	// console.log(session);
 	return (
 		<div>
 			<Navbar />
 			<h1>Dashboard</h1>
-			{/* <p>{session.user.name}</p> */}
+			<p>{session?.user?.name}</p>
+			<p>{session?.user?.id}</p>
 		</div>
 	);
 };

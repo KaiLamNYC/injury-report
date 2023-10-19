@@ -38,16 +38,16 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
-// import { loginSchema } from "../schemas/login";
-// type Input = z.infer<typeof loginSchema>;
+import { loginSchema } from "../schemas/login";
+type Input = z.infer<typeof loginSchema>;
 
 export default function LogInPage() {
 	const router = useRouter();
 
-	const form = useForm({
-		// resolver: zodResolver(loginSchema),
+	const form = useForm<Input>({
+		resolver: zodResolver(loginSchema),
 	});
-	function onSubmit(values) {
+	function onSubmit(values: Input) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		console.log(values);
@@ -55,17 +55,18 @@ export default function LogInPage() {
 		// e.preventDefault();
 		signIn("credentials", {
 			...values,
-			redirect: false,
+			callbackUrl: "/dashboard",
 		});
-		router.push("/dashboard");
+		// router.push("/dashboard");
 	}
+	form.watch();
 
 	return (
 		<div className='flex justify-center items-center min-h-screen'>
 			<Card className=' w-1/3'>
 				<CardHeader>
-					<CardTitle>Welcome!</CardTitle>
-					<CardDescription>Login To Your Account</CardDescription>
+					<CardTitle>Sign In Below</CardTitle>
+					<CardDescription>Enter your credentials below</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -75,13 +76,10 @@ export default function LogInPage() {
 								name='email'
 								render={({ field }) => (
 									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
+										<FormLabel>Email</FormLabel>
 										<FormControl>
 											<Input placeholder='Email' {...field} />
 										</FormControl>
-										{/* <FormDescription>
-												This is your public display name.
-											</FormDescription> */}
 										<FormMessage />
 									</FormItem>
 								)}
@@ -91,7 +89,7 @@ export default function LogInPage() {
 								name='password'
 								render={({ field }) => (
 									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
+										<FormLabel>Password</FormLabel>
 										<FormControl>
 											<Input
 												placeholder='Password'
@@ -99,14 +97,10 @@ export default function LogInPage() {
 												type='password'
 											/>
 										</FormControl>
-										{/* <FormDescription>
-												This is your public display name.
-											</FormDescription> */}
 										<FormMessage />
 									</FormItem>
 								)}
 							/>
-
 							<div className='flex justify-center items-center'>
 								<Button type='submit' className='w-full'>
 									LOGIN
@@ -117,7 +111,6 @@ export default function LogInPage() {
 				</CardContent>
 				<CardFooter className='flex flex-col'>
 					<p className='text-sm mb-2'>OR</p>
-
 					<Button
 						variant='outline'
 						onClick={() =>
@@ -130,7 +123,6 @@ export default function LogInPage() {
 						<Icons.google className='mr-2 h-4 w-4' />
 						Google
 					</Button>
-
 					<p className='text-sm mb-2'>
 						Dont have an Account? <Link href='/signup'>SIGN UP</Link>
 					</p>

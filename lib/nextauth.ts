@@ -16,22 +16,24 @@ export const authOptions: NextAuthOptions = {
 			name: "Credentials",
 			credentials: {
 				email: {
-					label: "email:",
+					label: "Email",
 					type: "text",
 					placeholder: "email",
 				},
 				password: {
-					label: "Password:",
+					label: "Password",
 					type: "password",
 				},
 			},
 			async authorize(credentials) {
-				//CHECKING FIELDS TO SEE IF VALID
-				const user = await prisma.user.findUnique({
-					where: {
-						email: credentials?.emailId,
-					},
-				});
+				// await connectToDB();
+
+				//DOUBLE CHECK FIELDS TO SEE IF VALID
+				if (!credentials.email || !credentials.password) {
+					return null;
+				}
+
+				const user = await User.findOne({ email: credentials?.email });
 
 				if (!user) {
 					return null;
@@ -40,31 +42,36 @@ export const authOptions: NextAuthOptions = {
 				//CHECKING PASSWORD
 				const passwordsMatch = await bcrypt.compare(
 					credentials?.password,
-					user.hashedPassword
+					user.password
 				);
 
 				if (!passwordsMatch) {
 					return null;
 				}
+				// console.log(user);
 				return user;
 			},
 		}),
 	],
+
 	//SETTING CUSTOM PAGES FOR ONBOARDING AND LOGIN FOR PROTECTED ROUTES
 	pages: {
 		signIn: "/login",
 	},
 	secret: process.env.NEXTAUTH_SECRET,
+	// debug: process.env.NODE_ENV !== "production",
 	callbacks: {
 		async jwt({ token, user, session }) {
-			//PASSING IN FIRSTNAME AND ONBOARDING TO TOKEN
-			// if (user) {
-			// 	return {
-			// 		...token,
-			// 		onboarded: user.onboarded,
-			// 		firstName: user.firstName,
-			// 	};
-			// }
+			//PASSING IN MONGODB ID TO TOKEN
+			console.log("jwt");
+			if (user) {
+				return {
+					...token,
+					id: user._id,
+				};
+			}
+			// console.log(user);
+			// console.log(session);
 			return token;
 		},
 		async session({ session, token, user }) {
@@ -73,19 +80,33 @@ export const authOptions: NextAuthOptions = {
 
 			//RETURNING THE MONGODB ID TO SESSION
 			session.user.id = sessionUser._id;
-
+			// return {
+			// 	...session,
+			// 	user: {
+			// 		...session.user,
+			// 		id: token.id,
+			// 	},
+			// };
 			return session;
 		},
-		//AFTER GOOGLE SIGNIN RUN THIS FUNCTION
-		async signIn({ profile }) {
-			console.log(profile);
+		//AFTER SIGNIN RUNS THIS FUNCTION
+		async signIn({ profile, user }) {
+			console.log("signin");
+			// console.log(profile);
 			// await connectToDB();
 			try {
 				await connectToDB();
+
 				// CHECK IF USER EXISTS IN DB
-				const userExists = await User.findOne({ email: profile.email });
+				const userExists = await User.findOne({
+					//TERNARY BECAUSE PROFILE IS UNDEFINED IF LOGGING IN WITH CREDENTIALS
+					//https://next-auth.js.org/configuration/events#signin
+					email: profile ? profile.email : user.email,
+				});
 
 				//CREATING USER IF DOESNT EXIST
+				//USER WILL ALWAYS EXIST IF LOGGING IN WITH CREDENTIALS
+				//ONLY FOR GOOGLE LOGIN
 				if (!userExists) {
 					const user = await User.create({
 						name: profile.name,
