@@ -17,6 +17,9 @@ function CreateKonvaCanvas() {
 	//FOR DATE TIME PICKER
 	const [startDate, setStartDate] = useState(new Date());
 
+	const [patientName, setPatientName] = useState("");
+	const [patientAge, setPatientAge] = useState("");
+
 	const stageRef = useRef(null);
 	const areas = [
 		{ name: "Right Palm", coords: [65, 314, 108, 323, 95, 379, 49, 362] },
@@ -165,10 +168,12 @@ function CreateKonvaCanvas() {
 		e.preventDefault();
 		// const stageToSave = stageRef.current;
 		// const stageState = stageToSave.toJSON();
-		console.log(startDate);
+		// console.log(startDate);
 		// console.log(inputs);
 		// console.log(stageState);
 		// console.log(circles);
+		console.log(patientAge);
+		console.log(patientName);
 	};
 
 	return (
@@ -233,9 +238,21 @@ function CreateKonvaCanvas() {
 					))}
 
 					<Label htmlFor='patientName'>Patient Name</Label>
-					<Input type='text' placeholder='Name of Patient' id='patientName' />
+					<Input
+						type='text'
+						placeholder='Name of Patient'
+						id='patientName'
+						value={patientName}
+						onChange={(e) => setPatientName(e.target.value)}
+					/>
 					<Label htmlFor='patientAge'>Patient Age</Label>
-					<Input type='number' placeholder='Age of Patient' id='patientAge' />
+					<Input
+						type='number'
+						placeholder='Age of Patient'
+						id='patientAge'
+						value={patientAge}
+						onChange={(e) => setPatientAge(e.target.value)}
+					/>
 					<Label htmlFor='timeOfInjury'>Date & Time of Injury</Label>
 					<DatePicker
 						selected={startDate}
