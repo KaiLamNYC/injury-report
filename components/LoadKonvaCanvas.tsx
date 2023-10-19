@@ -43,6 +43,9 @@ function LoadKonvaCanvas({ reportId }: Props) {
 				}}
 			></div>
 			<h1>Author: {data.author.name}</h1>
+			<h1>Time of Report: {data.createdAt}</h1>
+			<h1>Patient Name: {data.patientName}</h1>
+			<h1>Patient Age: {data.patientAge}</h1>
 			<h1>Time of Injury: {data.timeOfInjury}</h1>
 		</div>
 	);
