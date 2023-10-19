@@ -63,7 +63,7 @@ export const authOptions: NextAuthOptions = {
 	callbacks: {
 		async jwt({ token, user, session }) {
 			//PASSING IN MONGODB ID TO TOKEN
-			console.log("jwt");
+			// console.log("jwt");
 			if (user) {
 				return {
 					...token,
@@ -91,7 +91,7 @@ export const authOptions: NextAuthOptions = {
 		},
 		//AFTER SIGNIN RUNS THIS FUNCTION
 		async signIn({ profile, user }) {
-			console.log("signin");
+			// console.log("signin");
 			// console.log(profile);
 			// await connectToDB();
 			try {
@@ -125,5 +125,5 @@ export const authOptions: NextAuthOptions = {
 
 //https://next-auth.js.org/configuration/nextjs#getserversession
 export const getAuthSession = () => {
-	return getServerSession(options);
+	return getServerSession(authOptions);
 };

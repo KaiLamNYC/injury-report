@@ -1,3 +1,4 @@
+"use client";
 import axios from "axios";
 import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
@@ -175,16 +176,19 @@ function CreateKonvaCanvas() {
 		// console.log(inputs);
 		// console.log(stageState);
 		// console.log(circles);
-		console.log(patientAge);
-		console.log(patientName);
+		// console.log(patientAge);
+		// console.log(patientName);
 
-		const response = await axios.post("/api/generatePlaylist", {
+		const response = await axios.post("/api/createReport", {
 			patientAge,
 			patientName,
 			timeOfInjury: startDate,
-			userId: session?.user.id,
 			injuries: inputs,
 		});
+
+		// const response = await axios.get("/api/createReport");
+
+		console.log(response.data);
 	};
 
 	return (
