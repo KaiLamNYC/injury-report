@@ -29,42 +29,45 @@ import * as z from "zod";
 
 import { Icons } from "@/components/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-// import { registerSchema } from "../schemas/register";
+import { registerSchema } from "../schemas/register";
 
-// type Input = z.infer<typeof registerSchema>;
+type Input = z.infer<typeof registerSchema>;
 
 export default function SignUpPage() {
 	const router = useRouter();
 
 	// const form = useForm();
-	const form = useForm({
-		// resolver: zodResolver(registerSchema),
+	const form = useForm<Input>({
+		resolver: zodResolver(registerSchema),
 	});
-	async function onSubmit(values) {
+	async function onSubmit(values: Input) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		console.log(values);
 
-		const response = await fetch("/api/register", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify(values),
-		});
-		const userInfo = await response;
-		console.log(userInfo);
-		router.push("/login");
+		const response = await axios.post("/api/register", values);
+		// const response = await fetch("/api/register", {
+		// 	method: "POST",
+		// 	headers: {
+		// 		"Content-Type": "application/json",
+		// 	},
+		// 	body: JSON.stringify(values),
+		// });
+
+		console.log(response.data);
+		// router.push("/login");
 	}
+	form.watch();
 
 	return (
 		<div className='flex justify-center items-center min-h-screen'>
 			<Card className=' w-1/3'>
 				<CardHeader>
-					<CardTitle>Welcome!</CardTitle>
+					<CardTitle>Register</CardTitle>
 					<CardDescription>Sign Up Below</CardDescription>
 				</CardHeader>
 				<CardContent>
@@ -88,12 +91,12 @@ export default function SignUpPage() {
 							/>
 							<FormField
 								control={form.control}
-								name='username'
+								name='name'
 								render={({ field }) => (
 									<FormItem>
 										{/* <FormLabel>Username</FormLabel> */}
 										<FormControl>
-											<Input placeholder='Username' {...field} />
+											<Input placeholder='Name' {...field} />
 										</FormControl>
 										{/* <FormDescription>
 												This is your public display name.
@@ -138,7 +141,7 @@ export default function SignUpPage() {
 						variant='outline'
 						onClick={() =>
 							signIn("google", {
-								callbackUrl: "/onboarding/1",
+								callbackUrl: "/dashboard",
 							}).catch(console.error)
 						}
 						className='w-full mb-4'
