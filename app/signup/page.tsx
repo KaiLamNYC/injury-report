@@ -40,7 +40,6 @@ type Input = z.infer<typeof registerSchema>;
 export default function SignUpPage() {
 	const router = useRouter();
 
-	// const form = useForm();
 	const form = useForm<Input>({
 		resolver: zodResolver(registerSchema),
 	});
@@ -50,16 +49,9 @@ export default function SignUpPage() {
 		console.log(values);
 
 		const response = await axios.post("/api/register", values);
-		// const response = await fetch("/api/register", {
-		// 	method: "POST",
-		// 	headers: {
-		// 		"Content-Type": "application/json",
-		// 	},
-		// 	body: JSON.stringify(values),
-		// });
 
 		console.log(response.data);
-		// router.push("/login");
+		router.push("/login");
 	}
 	form.watch();
 
@@ -68,7 +60,7 @@ export default function SignUpPage() {
 			<Card className=' w-1/3'>
 				<CardHeader>
 					<CardTitle>Register</CardTitle>
-					<CardDescription>Sign Up Below</CardDescription>
+					<CardDescription>Create an account to gain access</CardDescription>
 				</CardHeader>
 				<CardContent>
 					<Form {...form}>
@@ -78,13 +70,10 @@ export default function SignUpPage() {
 								name='email'
 								render={({ field }) => (
 									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
+										<FormLabel>Email</FormLabel>
 										<FormControl>
 											<Input placeholder='Email' {...field} />
 										</FormControl>
-										{/* <FormDescription>
-												This is your public display name.
-											</FormDescription> */}
 										<FormMessage />
 									</FormItem>
 								)}
@@ -94,13 +83,13 @@ export default function SignUpPage() {
 								name='name'
 								render={({ field }) => (
 									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
+										<FormLabel>Name</FormLabel>
 										<FormControl>
 											<Input placeholder='Name' {...field} />
 										</FormControl>
-										{/* <FormDescription>
-												This is your public display name.
-											</FormDescription> */}
+										<FormDescription>
+											This is your public display name.
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
@@ -110,7 +99,7 @@ export default function SignUpPage() {
 								name='password'
 								render={({ field }) => (
 									<FormItem>
-										{/* <FormLabel>Username</FormLabel> */}
+										<FormLabel>Password</FormLabel>
 										<FormControl>
 											<Input
 												placeholder='Password'
@@ -118,9 +107,9 @@ export default function SignUpPage() {
 												type='password'
 											/>
 										</FormControl>
-										{/* <FormDescription>
-												This is your public display name.
-											</FormDescription> */}
+										<FormDescription>
+											Must be at least 6 characters long.
+										</FormDescription>
 										<FormMessage />
 									</FormItem>
 								)}
