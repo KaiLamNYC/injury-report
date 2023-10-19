@@ -16,8 +16,10 @@ export const fontSans = FontSans({
 
 export default function RootLayout({
 	children,
+	session,
 }: {
 	children: React.ReactNode;
+	session: any;
 }) {
 	return (
 		<html lang='en'>
@@ -27,7 +29,7 @@ export default function RootLayout({
 					fontSans.variable
 				)}
 			>
-				<Providers> {children}</Providers>
+				<Providers session={session}> {children}</Providers>
 			</body>
 		</html>
 	);

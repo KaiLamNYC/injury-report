@@ -146,11 +146,6 @@ function CreateKonvaCanvas() {
 		}
 	};
 
-	// const handleSave = () => {
-	// 	const stageToSave = stageRef.current;
-	// 	const stageState = stageToSave.toJSON();
-	// 	console.log(stageState); // For demonstration purposes
-	// };
 	const handleDelete = (label) => {
 		const newCircles = circles.filter((circle) => circle.label !== label);
 		setCircles(newCircles);
@@ -172,12 +167,6 @@ function CreateKonvaCanvas() {
 		e.preventDefault();
 		const stageToSave = stageRef.current;
 		const stageState = stageToSave.toJSON();
-		// console.log(startDate);
-		// console.log(inputs);
-		// console.log(stageState);
-		// console.log(circles);
-		// console.log(patientAge);
-		// console.log(patientName);
 
 		const response = await axios.post("/api/createReport", {
 			patientAge,
@@ -186,8 +175,6 @@ function CreateKonvaCanvas() {
 			injuries: inputs,
 			stageState,
 		});
-
-		// const response = await axios.get("/api/createReport");
 
 		console.log(response.data);
 	};
