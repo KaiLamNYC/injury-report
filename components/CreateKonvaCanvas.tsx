@@ -1,4 +1,6 @@
+import axios from "axios";
 import { X } from "lucide-react";
+import { useSession } from "next-auth/react";
 import React, { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +10,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 function CreateKonvaCanvas() {
+	const { data: session } = useSession();
 	const [image] = useImage("/body-map.jpeg");
 	const [circles, setCircles] = useState([]);
 
@@ -174,6 +177,14 @@ function CreateKonvaCanvas() {
 		// console.log(circles);
 		console.log(patientAge);
 		console.log(patientName);
+
+		const response = await axios.post("/api/generatePlaylist", {
+			patientAge,
+			patientName,
+			timeOfInjury: startDate,
+			userId: session?.user.id,
+			injuries: inputs,
+		});
 	};
 
 	return (
