@@ -25,7 +25,7 @@ const Providers = ({
 	return (
 		<QueryClientProvider client={queryClient}>
 			<SessionProvider session={session}>
-				<ThemeProvider attribute='class' defaultTheme='dark' enableSystem>
+				<ThemeProvider attribute='class' defaultTheme='dark'>
 					{children}
 				</ThemeProvider>
 			</SessionProvider>
