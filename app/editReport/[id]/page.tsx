@@ -1,6 +1,8 @@
 "use client";
 import EditKonvaCanvas from "@/components/EditKonvaCanvas";
 import Navbar from "@/components/Navbar";
+import { useSession } from "next-auth/react";
+import { redirect } from "next/navigation";
 import React from "react";
 
 type Props = {
@@ -10,6 +12,10 @@ type Props = {
 };
 
 const EditCanvas = ({ params }: Props) => {
+	const { data: session } = useSession();
+	if (session?.user?.id != params.id) {
+		return redirect(`/viewReport/${params.id}`);
+	}
 	return (
 		<div className='flex flex-row justify-between items-center min-h-screen'>
 			<Navbar />
