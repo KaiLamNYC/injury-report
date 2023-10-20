@@ -12,17 +12,16 @@ https://injury-report.vercel.app/
 ## Screenshots
 
 **Home Page**
-![Home View](/homeView.png)
-
+![Home View](/public/homeView.png)
 **User Dashboard**
-![User Dashboard](/injury-report/public/dashboard1.png)
-![User Dashboard](/injury-report/public/dashboard2.png)
+![User Dashboard](/public/dashboard1.png)
+![User Dashboard](/public/dashboard2.png)
 **Create Report**
-![Create Report](/injury-report/public/editView.png)
+![Create Report](/public/editView.png)
 **View Report**
-![View Report](/injury-report/public/viewOne.png)
+![View Report](/public/viewOne.png)
 **All Reports**
-![All Reports](/injury-report/public/allView.png)
+![All Reports](/public/allView.png)
 
 ## Features
 
