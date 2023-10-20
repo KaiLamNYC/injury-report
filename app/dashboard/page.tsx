@@ -11,8 +11,6 @@ const Dashboard = (props: Props) => {
 		<div>
 			<Navbar />
 			<h1>Dashboard</h1>
-			<p>{session?.user?.name}</p>
-			<p>{session?.user?.id}</p>
 		</div>
 	);
 };
