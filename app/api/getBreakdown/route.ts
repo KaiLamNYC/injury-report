@@ -1,7 +1,7 @@
 import Injury from "@/lib/models/injury.model";
 import { NextResponse } from "next/server";
 
-export async function GET(req, res) {
+export async function GET(req: Request, res: Response) {
 	try {
 		// Aggregate injuries based on their locationOfInjury
 		const injuriesAggregated = await Injury.aggregate([
@@ -30,5 +30,3 @@ export async function GET(req, res) {
 		});
 	}
 }
-
-export default GET;
