@@ -11,7 +11,8 @@ export async function POST(req: Request, res: Response) {
 		const { patientAge, patientName, timeOfInjury, injuries, stageState } =
 			await req.json();
 		const session = await getAuthSession();
-		console.log();
+		console.log("session here");
+		console.log(session);
 		const formattedInjuries = injuries.map((injury: any) => ({
 			locationOfInjury: injury.label,
 			description: injury.value,

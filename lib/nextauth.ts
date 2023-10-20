@@ -76,15 +76,13 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token, user }) {
 			//SEARCHING FOR USER IN DB
-			// if (token) {
+
+			const sessionUser = await User.findOne({ email: session.user.email });
+			session.user.id = sessionUser._id;
+
+			// if (token.id) {
 			// 	session.user.id = token.id;
-			// } else {
-			// 	const sessionUser = await User.findOne({ email: session.user.email });
-			// 	session.user.id = sessionUser._id;
 			// }
-			if (token.id) {
-				session.user.id = token.id;
-			}
 			return session;
 
 			//RETURNING THE MONGODB ID TO SESSION
