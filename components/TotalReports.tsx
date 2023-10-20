@@ -1,3 +1,4 @@
+"use client";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import React from "react";
@@ -7,7 +8,7 @@ type Props = {};
 
 const TotalReports = (props: Props) => {
 	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["All Reports"],
+		queryKey: ["Total Reports"],
 		queryFn: async () => {
 			const data = await axios.get("/api/getTotalInjuries");
 			return data.data.payload;

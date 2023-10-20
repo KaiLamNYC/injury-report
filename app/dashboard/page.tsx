@@ -1,5 +1,6 @@
-"use client";
+// "use client";
 import CommonBarChart from "@/components/BarChart";
+import AgeDistributionHistogram from "@/components/Histogram";
 import Navbar from "@/components/Navbar";
 import PieChartComponent from "@/components/PieChart";
 import TotalReports from "@/components/TotalReports";
@@ -8,7 +9,6 @@ import React from "react";
 type Props = {};
 
 const Dashboard = (props: Props) => {
-	const { data: session } = useSession();
 	// console.log(session);
 	return (
 		<div className='flex flex row'>
@@ -32,7 +32,7 @@ const Dashboard = (props: Props) => {
 				<div>
 					<div className='flex flex-col items-center'>
 						<h1 className='text-xl'>Age Distribution</h1>
-						<CommonBarChart />
+						<AgeDistributionHistogram />
 					</div>
 				</div>
 			</div>
