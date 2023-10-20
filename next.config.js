@@ -9,7 +9,18 @@ if (
 		process.env.PWD
 	}/node_modules/canvas/build/Release:${process.env.LD_LIBRARY_PATH || ""}`;
 }
-
-module.exports = {
+const nextConfig = {
+	// reactStrictMode: false,
+	webpack: (config) => {
+		config.externals.push({
+			"utf-8-validate": "commonjs utf-8-validate",
+			bufferutil: "commonjs bufferutil",
+			canvas: "commonjs canvas",
+		});
+		// config.infrastructureLogging = { debug: /PackFileCache/ };
+		return config;
+	},
 	reactStrictMode: true,
 };
+
+module.exports = nextConfig;
