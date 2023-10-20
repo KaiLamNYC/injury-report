@@ -20,7 +20,7 @@
 		"@tanstack/react-table": "^8.10.7",
 		"axios": "^1.5.1",
 		"bcrypt": "^5.1.1",
-		"canvas": "^2.11.2",
+		"canvas": "https://registry.yarnpkg.com/@favware/skip-dependency/-/skip-dependency-1.2.1.tgz",
 		"class-variance-authority": "^0.7.0",
 		"clsx": "^2.0.0",
 		"konva": "^9.2.2",
