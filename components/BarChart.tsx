@@ -20,9 +20,9 @@ import {
 // 	{ name: "Orange", uv: 3 },
 // ];
 
-const SimpleBarChart = () => {
+const CommonBarChart = () => {
 	const { data, isLoading, isError, error } = useQuery({
-		queryKey: ["All Reports"],
+		queryKey: ["Bar Chart"],
 		queryFn: async () => {
 			const data = await axios.get("/api/getFrequentInjuries");
 			return data.data.payload;
@@ -48,9 +48,9 @@ const SimpleBarChart = () => {
 			<YAxis />
 			<Tooltip />
 			<Legend />
-			<Bar dataKey='uv' fill='#8884d8' />
+			<Bar dataKey='injuries' fill='#BE123C' />
 		</BarChart>
 	);
 };
 
-export default SimpleBarChart;
+export default CommonBarChart;

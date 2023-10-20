@@ -20,7 +20,7 @@ export async function GET(req: Request, res: Response) {
 
 		const formattedInjuries = topInjuries.map((injury) => ({
 			name: injury._id,
-			uv: injury.count,
+			injuries: injury.count,
 		}));
 
 		return NextResponse.json({
