@@ -76,12 +76,16 @@ export const authOptions: NextAuthOptions = {
 		},
 		async session({ session, token, user }) {
 			//SEARCHING FOR USER IN DB
-			if (token) {
+			// if (token) {
+			// 	session.user.id = token.id;
+			// } else {
+			// 	const sessionUser = await User.findOne({ email: session.user.email });
+			// 	session.user.id = sessionUser._id;
+			// }
+			if (token.id) {
 				session.user.id = token.id;
-			} else {
-				const sessionUser = await User.findOne({ email: session.user.email });
-				session.user.id = sessionUser._id;
 			}
+			return session;
 
 			//RETURNING THE MONGODB ID TO SESSION
 			// return {
@@ -91,7 +95,13 @@ export const authOptions: NextAuthOptions = {
 			// 		id: token.id,
 			// 	},
 			// };
-			return session;
+			// return {
+			// 	...session,
+			// 	user: {
+			// 		...session.user,
+			// 		id: token.id,
+			// 	},
+			// };
 		},
 		//AFTER SIGNIN RUNS THIS FUNCTION
 		async signIn({ profile, user }) {
