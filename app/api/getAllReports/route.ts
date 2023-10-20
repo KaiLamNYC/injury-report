@@ -9,7 +9,7 @@ export async function GET(req: Request, res: Response) {
 
 		// Fetch all reports with only the required fields and exclude the _id field
 		const reports = await Report.find().select(
-			"patientName timeOfInjury createdAt -_id"
+			"patientName timeOfInjury createdAt"
 		);
 
 		return NextResponse.json({
