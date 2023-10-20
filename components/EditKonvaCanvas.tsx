@@ -214,8 +214,25 @@ function EditKonvaCanvas({ reportId }: Props) {
 	// };
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		console.log("submitted!");
-		console.log(inputs);
+		const stageToSave = stageRef.current;
+		const stageState = stageToSave.toJSON();
+		// console.log("submitted!");
+		// console.log(inputs);
+		// console.log(patientName);
+		// console.log(patientAge);
+		// console.log(startDate);
+		// console.log(stageState);
+
+		const response = await axios.post("/api/updateReport", {
+			patientAge,
+			patientName,
+			timeOfInjury: startDate,
+			injuries: inputs,
+			stageState,
+			reportId,
+		});
+
+		console.log(response.data);
 	};
 
 	if (isLoading) {
