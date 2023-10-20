@@ -12,7 +12,7 @@ https://injury-report.vercel.app/
 ## Screenshots
 
 **Home Page**
-![Home View](/injury-report/public/homeView.png)
+![Home View](/homeView.png)
 
 **User Dashboard**
 ![User Dashboard](/injury-report/public/dashboard1.png)
