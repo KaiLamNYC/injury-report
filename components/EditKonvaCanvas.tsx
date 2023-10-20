@@ -1,31 +1,75 @@
-"use client";
-import React, { useRef, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import { X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { Circle, Image, Layer, Line, Stage, Text } from "react-konva";
 import useImage from "use-image";
 import { Button } from "./ui/button";
+import { Input } from "./ui/input";
+import { Label } from "./ui/label";
 
-function EditKonvaCanvas({ savedState }) {
+type Props = {
+	reportId: string;
+};
+
+function EditKonvaCanvas({ reportId }: Props) {
+	const { data, isLoading, isError, error } = useQuery({
+		queryKey: ["Edit Report"],
+		queryFn: async () => {
+			const response = await axios.post("/api/getReport", { reportId });
+			return response.data.payload;
+		},
+	});
 	const [image] = useImage("/body-map.jpeg");
 	const stageRef = useRef(null);
+	const [patientName, setPatientName] = useState("");
+	const [patientAge, setPatientAge] = useState("");
+	const [startDate, setStartDate] = useState(new Date());
 
-	// Extract circles and their corresponding text labels from savedState
-	const initialCircles = savedState.children[0].children
-		.filter((child) => child.className === "Circle")
-		.map((circle) => {
-			const correspondingText = savedState.children[0].children.find(
-				(text) =>
-					text.className === "Text" &&
-					text.attrs.x === circle.attrs.x &&
-					text.attrs.y === circle.attrs.y
-			);
-			return {
-				...circle.attrs,
-				name: correspondingText.attrs.text,
-			};
-		});
+	// const savedState = JSON.parse(data.stageState);
+	const [circles, setCircles] = useState([]);
+	const [inputs, setInputs] = useState([]);
+	useEffect(() => {
+		if (data) {
+			setPatientName(data.patientName || "");
+			setPatientAge(data.patientAge || "");
+			setStartDate(new Date(data.timeOfInjury || Date.now()));
+			let savedState;
+			try {
+				savedState = JSON.parse(data.stageState);
+			} catch (error) {
+				console.error("Error parsing stageState:", error);
+			}
 
-	const [circles, setCircles] = useState(initialCircles);
+			if (savedState) {
+				const loadedCircles = savedState.children[0].children
+					.filter((child) => child.className === "Circle")
+					.map((circle) => {
+						const correspondingText = savedState.children[0].children.find(
+							(text) =>
+								text.className === "Text" &&
+								text.attrs.x === circle.attrs.x &&
+								text.attrs.y === circle.attrs.y
+						);
+						return {
+							...circle.attrs,
+							name: correspondingText.attrs.text,
+						};
+					});
+				setCircles(loadedCircles);
+			}
 
+			if (data.injuries) {
+				const loadedInputs = data.injuries.map((injury) => ({
+					label: injury.locationOfInjury,
+					value: injury.description,
+				}));
+				setInputs(loadedInputs);
+			}
+		}
+	}, [data]);
 	const areas = [
 		{ name: "Right Palm", coords: [65, 314, 108, 323, 95, 379, 49, 362] },
 		{ name: "Left Palm", coords: [242, 319, 296, 312, 303, 377, 260, 377] },
@@ -100,85 +144,184 @@ function EditKonvaCanvas({ savedState }) {
 		}
 		return intersections % 2 !== 0;
 	};
+	// ... (rest of the component logic)
 
 	const handleStageClick = (event) => {
 		const stage = event.target.getStage();
 		const point = stage.getPointerPosition();
 
+		//CHECKING IF THE POINT IS WITHIN THE AREA
 		const clickedArea = areas.find((area) => isPointInArea(point, area.coords));
 
+		//IF POINT IS A VALID AREA, CHECK IF EXISTS AND REPLACE
 		if (clickedArea) {
 			const existingCircleIndex = circles.findIndex(
 				(circle) => circle.name === clickedArea.name
 			);
 
-			const newCircle = {
-				x: point.x,
-				y: point.y,
-				radius: 20,
-				fill: "transparent",
-				stroke: "red",
-				strokeWidth: 3,
-				name: clickedArea.name,
-			};
-
 			if (existingCircleIndex !== -1) {
-				const updatedCircles = [...circles];
-				updatedCircles[existingCircleIndex] = newCircle;
-				setCircles(updatedCircles);
+				// Replace the existing circle
+				const newCircles = [...circles];
+				newCircles[existingCircleIndex] = {
+					x: point.x,
+					y: point.y,
+					radius: 20,
+					name: clickedArea.name, // Updated this line
+				};
+				setCircles(newCircles); // Fixed the typo here
 			} else {
-				setCircles([...circles, newCircle]);
+				// Add a new circle
+				setCircles([
+					...circles,
+					{ x: point.x, y: point.y, radius: 20, name: clickedArea.name },
+				]);
+			}
+
+			//INPUT STUFF
+
+			const existingInputIndex = inputs.findIndex(
+				(input) => input.label === clickedArea.name
+			);
+
+			if (existingInputIndex === -1) {
+				setInputs([...inputs, { label: clickedArea.name, value: "" }]);
 			}
 		}
 	};
 
-	const handleSave = () => {
-		const stageToSave = stageRef.current;
-		const stageState = stageToSave.toJSON();
-		console.log(stageState); // For demonstration purposes
+	const handleDelete = (label) => {
+		const newCircles = circles.filter((circle) => circle.name !== label);
+
+		setCircles(newCircles);
+
+		const newInputs = inputs.filter((input) => input.label !== label);
+		setInputs(newInputs);
 	};
+	const handleInputChange = (label, newValue) => {
+		const updatedInputs = inputs.map((input) => {
+			if (input.label === label) {
+				return { ...input, value: newValue };
+			}
+			return input;
+		});
+		setInputs(updatedInputs);
+	};
+
+	// const handleSave = () => {
+	// 	const stageToSave = stageRef.current;
+	// 	const stageState = stageToSave.toJSON();
+	// 	console.log(stageState); // For demonstration purposes
+	// };
+	const handleSubmit = async (e) => {
+		e.preventDefault();
+		console.log("submitted!");
+		console.log(inputs);
+	};
+
+	if (isLoading) {
+		return <div>Loading...</div>;
+	}
+
+	if (isError) {
+		return <div>Error: {error.message}</div>;
+	}
+
 	return (
 		<div>
-			<Stage width={612} height={612} onClick={handleStageClick} ref={stageRef}>
-				<Layer>
-					<Image image={image} alt='body map' />
-					{areas.map((area, index) => (
-						<Line
-							key={index}
-							points={area.coords}
-							closed
-							stroke='transparent' // Make it invisible
-						/>
-					))}
-					{circles.map((circle, index) => (
-						<>
-							<Circle
+			<form onSubmit={handleSubmit}>
+				<Stage
+					width={612}
+					height={612}
+					onClick={handleStageClick}
+					ref={stageRef}
+				>
+					<Layer>
+						<Image image={image} alt='body map' />
+						{areas.map((area, index) => (
+							<Line
 								key={index}
-								x={circle.x}
-								y={circle.y}
-								radius={circle.radius}
-								fill={circle.fill}
-								stroke={circle.stroke}
-								strokeWidth={circle.strokeWidth}
-								draggable={true}
+								points={area.coords}
+								closed
+								stroke='transparent' // Make it invisible
 							/>
-							<Text
-								x={circle.x}
-								y={circle.y}
-								text={circle.name}
-								fontSize={15}
-								align='center'
-								verticalAlign='middle'
-								offsetX={5} // Adjust based on the font size
-								offsetY={7} // Adjust based on the font size
-								fill='black'
-							/>
-						</>
-					))}
-				</Layer>
-			</Stage>
+						))}
+						{circles.map((circle, index) => (
+							<>
+								<Circle
+									key={index}
+									x={circle.x}
+									y={circle.y}
+									radius={circle.radius}
+									fill='transparent'
+									stroke='red'
+									strokeWidth={3}
+								/>
+								<Text
+									x={circle.x}
+									y={circle.y}
+									text={circle.name}
+									fontSize={15}
+									align='center'
+									verticalAlign='middle'
+									offsetX={5} // Adjust based on the font size
+									offsetY={7} // Adjust based on the font size
+									fill='black'
+								/>
+							</>
+						))}
+					</Layer>
+				</Stage>
+				<div className='mt-4 flex flex-col gap-2'>
+					{inputs.map((input, index) => (
+						<div key={index} className='flex flex-col gap-2'>
+							<div className='flex flex-row items-center gap-2'>
+								<Label htmlFor={`injury-${index}`}>{input.label}</Label>
+								<Button
+									onClick={() => handleDelete(input.label)}
+									className='p-1 w-6 h-6'
+								>
+									<X size={12} />
+								</Button>
+							</div>
 
-			<Button onClick={handleSave}>SAVE</Button>
+							<Input
+								id={`injury-${index}`}
+								type='text'
+								placeholder={`Describe ${input.label} injury`}
+								onChange={(e) => handleInputChange(input.label, e.target.value)}
+								value={input.value}
+							/>
+						</div>
+					))}
+					<Label htmlFor='patientName'>Patient Name</Label>
+					<Input
+						type='text'
+						placeholder='Name of Patient'
+						id='patientName'
+						value={patientName}
+						onChange={(e) => setPatientName(e.target.value)}
+					/>
+					<Label htmlFor='patientAge'>Patient Age</Label>
+					<Input
+						type='number'
+						placeholder='Age of Patient'
+						id='patientAge'
+						value={patientAge}
+						onChange={(e) => setPatientAge(e.target.value)}
+					/>
+					<Label htmlFor='timeOfInjury'>Date & Time of Injury</Label>
+					<DatePicker
+						selected={startDate}
+						onChange={(date) => setStartDate(date)}
+						timeInputLabel='Time:'
+						dateFormat='MM/dd/yyyy h:mm aa'
+						showTimeInput
+					/>
+				</div>
+				<Button type='submit' className='mt-2'>
+					SAVE
+				</Button>
+			</form>
 		</div>
 	);
 }
