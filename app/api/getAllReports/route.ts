@@ -4,17 +4,29 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request, res: Response) {
 	try {
-		// Connect to the database
+		// fonnect to the database
 		connectToDB();
 
-		// Fetch all reports with only the required fields and exclude the _id field
-		const reports = await Report.find().select(
-			"patientName timeOfInjury createdAt"
-		);
+		// fetch all reports and populate the author field
+		const reports = await Report.find()
+			.select("patientName timeOfInjury createdAt")
+			.populate({
+				path: "author",
+				select: "name -_id",
+			});
+
+		// map over the reports to restructure them to match the desired format
+		const formattedReports = reports.map((report) => ({
+			_id: report._id.toString(),
+			author: report.author.name,
+			patientName: report.patientName,
+			timeOfInjury: report.timeOfInjury,
+			createdAt: report.createdAt,
+		}));
 
 		return NextResponse.json({
 			message: "success",
-			payload: reports,
+			payload: formattedReports,
 		});
 	} catch (err) {
 		console.error("Error fetching reports:", err);

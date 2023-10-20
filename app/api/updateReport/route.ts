@@ -18,6 +18,17 @@ export async function POST(req: Request, res: Response) {
 		} = await req.json();
 		const session = await getAuthSession();
 
+		// Find the report first to check the author
+		const report = await Report.findById(reportId);
+		if (!report) {
+			throw new Error("Report not found");
+		}
+
+		// Check if the session user is the author of the report
+		if (!session || String(report.author) !== String(session?.user?.id)) {
+			throw new Error("Not authorized to update this report");
+		}
+
 		const formattedInjuries = injuries.map((injury) => ({
 			locationOfInjury: injury.label,
 			description: injury.value,
@@ -42,10 +53,6 @@ export async function POST(req: Request, res: Response) {
 			},
 			{ new: true } // This option returns the updated document
 		);
-
-		if (!updatedReport) {
-			throw new Error("Report not found");
-		}
 
 		return NextResponse.json({
 			message: "success",
