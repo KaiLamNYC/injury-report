@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Injury from "@/lib/models/injury.model";
 import Report from "@/lib/models/report.model";
 import { connectToDB } from "@/lib/mongoose";

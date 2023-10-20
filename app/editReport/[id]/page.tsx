@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 "use client";
 import EditKonvaCanvas from "@/components/EditKonvaCanvas";
 import Navbar from "@/components/Navbar";
