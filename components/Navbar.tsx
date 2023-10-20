@@ -1,26 +1,29 @@
 "use client";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
 import React from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Button } from "./ui/button";
 
 type Props = {};
 
 const Navbar = (props: Props) => {
+	const { data: session } = useSession();
 	return (
 		<div className='flex flex-col items-start space-y-16'>
-			<p>USER AVATAR</p>
+			<p>Welcome {session?.user.name}</p>
+			<Avatar>
+				<AvatarImage src={session?.user.image} alt='@shadcn' />
+				<AvatarFallback>{session?.user?.name[0]}</AvatarFallback>
+			</Avatar>
 			<Link href={"/allReports"}>
 				<p>All Reports</p>
 			</Link>
+			<Link href={"/dashboard"}>
+				<p>Dashboard</p>
+			</Link>
 			<Link href={"/createReport"}>
 				<p>Create Report</p>
-			</Link>
-			<Link href={"/viewReport"}>
-				<p>View Report</p>
-			</Link>
-			<Link href={"/editReport"}>
-				<p>Edit Report</p>
 			</Link>
 
 			<Button
