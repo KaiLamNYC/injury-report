@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import Konva from "konva";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useRef, useState } from "react";
 import {
 	Card,
@@ -85,6 +86,11 @@ function LoadKonvaCanvas({ reportId }: Props) {
 						{formatDate(data.timeOfInjury)}
 					</p>
 				</CardContent>
+				<CardFooter>
+					<Link href={`/editReport/${reportId}`}>
+						<h1>Edit Report</h1>
+					</Link>
+				</CardFooter>
 			</Card>
 			{/* </div> */}
 
