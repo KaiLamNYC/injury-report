@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { X } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,6 +16,7 @@ type Props = {
 };
 
 function EditKonvaCanvas({ reportId }: Props) {
+	const router = useRouter();
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["Edit Report"],
 		queryFn: async () => {
@@ -207,21 +209,10 @@ function EditKonvaCanvas({ reportId }: Props) {
 		setInputs(updatedInputs);
 	};
 
-	// const handleSave = () => {
-	// 	const stageToSave = stageRef.current;
-	// 	const stageState = stageToSave.toJSON();
-	// 	console.log(stageState); // For demonstration purposes
-	// };
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		const stageToSave = stageRef.current;
 		const stageState = stageToSave.toJSON();
-		// console.log("submitted!");
-		// console.log(inputs);
-		// console.log(patientName);
-		// console.log(patientAge);
-		// console.log(startDate);
-		// console.log(stageState);
 
 		const response = await axios.post("/api/updateReport", {
 			patientAge,
@@ -233,6 +224,7 @@ function EditKonvaCanvas({ reportId }: Props) {
 		});
 
 		console.log(response.data);
+		router.push(`/viewReport/${reportId}`);
 	};
 
 	if (isLoading) {

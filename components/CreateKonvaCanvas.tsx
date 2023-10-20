@@ -2,6 +2,7 @@
 import axios from "axios";
 import { X } from "lucide-react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -11,6 +12,7 @@ import { Button } from "./ui/button";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 function CreateKonvaCanvas() {
+	const router = useRouter();
 	const { data: session } = useSession();
 	const [image] = useImage("/body-map.jpeg");
 	const [circles, setCircles] = useState([]);
@@ -177,6 +179,7 @@ function CreateKonvaCanvas() {
 		});
 
 		console.log(response.data);
+		router.push(`/viewReport/${response.data.payload._id}`);
 	};
 
 	return (
