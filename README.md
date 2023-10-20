@@ -59,5 +59,3 @@ This project utilizes several libraries to enhance its functionality:
 - **KonvaJS with Next.js**: Spent a lot of time dealing with errors using Next.js with KonvaJS due to known server-side issues.
 - **Deployment on Vercel**: Encountered some challenges with deploying on Vercel, especially related to canvas rendering.
 - **Learning Experience**: The project was both extremely fun and challenging. It was a great learning experience, especially since it was the first time using KonvaJS.
-- **Data Privacy**: All injury reports are stored securely, ensuring user data privacy and protection.
-- **Accessibility**: The platform is designed with accessibility in mind, catering to users of all abilities.
