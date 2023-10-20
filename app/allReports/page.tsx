@@ -8,7 +8,7 @@ import { DataTable } from "./data-table";
 
 type Props = {};
 
-const page = (props: Props) => {
+const AllReportsPage = (props: Props) => {
 	const { data, isLoading, isError, error } = useQuery({
 		queryKey: ["All Reports"],
 		queryFn: async () => {
@@ -35,4 +35,4 @@ const page = (props: Props) => {
 	);
 };
 
-export default page;
+export default AllReportsPage;
