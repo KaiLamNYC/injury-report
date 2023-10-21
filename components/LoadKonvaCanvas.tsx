@@ -32,6 +32,7 @@ function LoadKonvaCanvas({ reportId }: Props) {
 		queryKey: ["Injury Report"],
 		queryFn: async () => {
 			const data = await axios.post("/api/getReport", { reportId });
+			console.log(data.data.payload);
 			return data.data.payload;
 		},
 	});
@@ -67,23 +68,22 @@ function LoadKonvaCanvas({ reportId }: Props) {
 			{/* <div className='flex justify-center items-center'> */}
 			<Card className='flex flex-col justify-center items-center'>
 				<CardHeader className='flex flex-col items-center'>
-					<CardTitle>{data.patientName}</CardTitle>
-					<CardDescription> {data.patientAge} years old</CardDescription>
+					<CardTitle>{data?.patientName}</CardTitle>
+					<CardDescription> {data?.patientAge} years old</CardDescription>
 				</CardHeader>
-
 				<CardContent>
 					<p className='mb-2'>
 						<span className='font-semibold text-primary'>Author:</span>{" "}
-						{data.author?.name || "Unknown"}
+						{data?.author?.name || "Unknown"}
 					</p>
 					<p className='mb-2'>
 						<span className='font-semibold text-primary'>Time of Report:</span>{" "}
-						{formatDate(data.createdAt)}
+						{data?.createdAt && formatDate(data.createdAt)}
 					</p>
 
 					<p className='mb-2'>
 						<span className='font-semibold text-primary'>Time of Injury:</span>{" "}
-						{formatDate(data.timeOfInjury)}
+						{data?.timeOfInjury && formatDate(data.timeOfInjury)}
 					</p>
 				</CardContent>
 				<CardFooter>
@@ -97,7 +97,7 @@ function LoadKonvaCanvas({ reportId }: Props) {
 			{/* <h1>Author: {data.author.name}</h1> */}
 
 			<Table className='gap-1'>
-				<TableCaption>List of {data.patientName} injuries</TableCaption>
+				<TableCaption>List of {data?.patientName} injuries</TableCaption>
 				<TableHeader>
 					<TableRow>
 						<TableHead className=''>Body Part</TableHead>
@@ -105,7 +105,7 @@ function LoadKonvaCanvas({ reportId }: Props) {
 					</TableRow>
 				</TableHeader>
 				<TableBody>
-					{data.injuries.map((injury, index) => (
+					{data?.injuries?.map((injury, index) => (
 						<TableRow key={index}>
 							{/* <TableCell className='font-bold'>{index + 1}</TableCell> */}
 							<TableCell className='font-semibold'>
