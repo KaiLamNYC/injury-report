@@ -1,6 +1,9 @@
 # Injury Report Database
 
 **WORKING PERFECT IN DEVELOPMENT, IF ANY ISSUES ON DEPLOYMENT JUST KEEP REFRESHING IT WILL LOAD**
+MISSINGSCHEMAERROR ON DEPLOYMENT DUE TO TS COMPILER WHEN YOU TRY TO SELECT A REPORT FROM THE ALL REPORTS PAGE
+
+If you start at Create A Report, you can then view the report with no issues on deployment. You can then go on to edit it as well. Before I made it so you can only edit your own reports but I removed it due to issues in deployment.
 
 ## Overview
 
@@ -22,6 +25,8 @@ https://injury-report.vercel.app/
 ![Create Report](/public/editView.png)
 **View Report**
 ![View Report](/public/viewOne.png)
+**Edit Report**
+![Edit Report](/public/editReport.png)
 **All Reports**
 ![All Reports](/public/allView.png)
 
