@@ -26,11 +26,6 @@ export async function POST(req: Request, res: Response) {
 			throw new Error("Report not found");
 		}
 
-		// Check if the session user is the author of the report
-		if (!session || String(report.author) !== String(session?.user?.id)) {
-			throw new Error("Not authorized to update this report");
-		}
-
 		const formattedInjuries = injuries.map((injury) => ({
 			locationOfInjury: injury.label,
 			description: injury.value,
