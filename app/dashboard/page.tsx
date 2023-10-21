@@ -32,7 +32,7 @@ const Dashboard = (props: Props) => {
 				<div>
 					<div className='flex flex-col items-center'>
 						<h1 className='text-xl'>Age Distribution</h1>
-						<AgeDistributionHistogram />
+						{/* <AgeDistributionHistogram /> */}
 					</div>
 				</div>
 			</div>

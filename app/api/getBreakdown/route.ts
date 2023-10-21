@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request, res: Response) {
 	try {
-		// Aggregate injuries based on their locationOfInjury
 		const injuriesAggregated = await Injury.aggregate([
 			{
 				$group: {
@@ -13,7 +12,6 @@ export async function GET(req: Request, res: Response) {
 			},
 		]);
 
-		// Convert the aggregated data to the required format
 		const data = injuriesAggregated.map((injury) => ({
 			name: injury._id,
 			value: injury.count,
