@@ -14,10 +14,10 @@ type Props = {
 };
 
 const EditCanvas = ({ params }: Props) => {
-	const { data: session } = useSession();
-	if (session?.user?.id != params.id) {
-		return redirect(`/viewReport/${params.id}`);
-	}
+	// const { data: session } = useSession();
+	// if (session?.user?.id != params.id) {
+	// 	return redirect(`/viewReport/${params.id}`);
+	// }
 	return (
 		<div className='flex flex-row justify-between items-center min-h-screen'>
 			<Navbar />
