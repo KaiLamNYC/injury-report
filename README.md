@@ -47,6 +47,7 @@ While the Injury Report Database serves its main purpose efficiently, there are 
 - **Improve Overall UI**: Enhance the user interface for a more intuitive and pleasant user experience.
 - **Improve Error Handling**: More robust error handling mechanisms to ensure smooth user interactions.
 - **Injury Document Management**: Address the oversight where, during report updates, old injury documents are not deleted but new ones are created.
+- **Budgetting More Time for Deployment**: The deployment phase consumed as much time as the development of the entire app due to unforeseen issues. I realized I needed to allocate more time for deployment in future projects.
 
 ## Libraries
 
@@ -64,5 +65,5 @@ This project utilizes several libraries to enhance its functionality:
 ## Notes
 
 - **KonvaJS with Next.js**: Spent a lot of time dealing with errors using Next.js with KonvaJS due to known server-side issues.
-- **Deployment on Vercel**: Encountered some challenges with deploying on Vercel, especially related to canvas rendering.
+- **Deployment on Vercel**: Encountered some challenges with deploying on Vercel related to canvas rendering.
 - **Learning Experience**: The project was both extremely fun and challenging. It was a great learning experience, especially since it was the first time using KonvaJS.
