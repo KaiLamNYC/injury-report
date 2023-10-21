@@ -1,5 +1,7 @@
 import mongoose from "mongoose";
-
+import Injury from "./models/injury.model";
+import Report from "./models/report.model";
+import User from "./models/user.model";
 //VAR TO CHECK IF WERE CONNECTED TO MONGOOSE
 let isConnected = false;
 
