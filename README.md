@@ -1,5 +1,7 @@
 # Injury Report Database
 
+**WORKING PERFECT IN DEVELOPMENT, IF ANY ISSUES ON DEPLOYMENT JUST KEEP REFRESHING IT WILL LOAD**
+
 ## Overview
 
 The Injury Report Database is a comprehensive solution designed to streamline the process of creating and updating injury reports. With its intuitive interface, users can easily pinpoint injury locations using an auto-detection body map. Additionally, the platform offers an analytics dashboard, providing insights and overviews of the injury data collected.
