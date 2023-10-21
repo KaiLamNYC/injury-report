@@ -74,7 +74,7 @@ function LoadKonvaCanvas({ reportId }: Props) {
 				<CardContent>
 					<p className='mb-2'>
 						<span className='font-semibold text-primary'>Author:</span>{" "}
-						{data.author.name}
+						{data.author?.name || "Unknown"}
 					</p>
 					<p className='mb-2'>
 						<span className='font-semibold text-primary'>Time of Report:</span>{" "}
